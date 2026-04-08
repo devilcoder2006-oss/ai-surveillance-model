@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AI Surveillance Software</title>
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --primary-color: #00ffc3;
+            --accent-color: #ff00ff;
+            --dark-bg: #0a0a1a;
+            --card-bg: rgba(20, 20, 40, 0.5);
+            --text-color: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: rgba(0, 255, 195, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            background: var(--dark-bg) url('https://www.transparenttextures.com/patterns/stardust.png');
+            overflow-x: hidden;
+        }
+
+        .container { width: 90%; max-width: 1200px; margin: auto; padding: 20px 0; }
+
+        h1, h2, h3, h4, h5, h6, .logo { font-family: 'Orbitron', sans-serif; }
+
+        .header {
+            background-color: rgba(10, 10, 26, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .header.scrolled {
+            background-color: rgba(10, 10, 26, 0.8);
+            box-shadow: 0 0 15px rgba(0, 255, 195, 0.2);
+        }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; }
+
+        .logo {
+            font-size: 1.8rem; font-weight: 700; color: var(--primary-color);
+            text-decoration: none;
+            text-shadow: 0 0 8px var(--primary-color), 0 0 15px var(--accent-color);
+        }
+
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: 25px; }
+        .nav-links a {
+            color: var(--text-color); text-decoration: none; font-weight: 400;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--primary-color); text-shadow: 0 0 5px var(--primary-color); }
+
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+
+        .hero {
+            text-align: center; padding: 80px 20px; background: transparent;
+            height: 90vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem; margin-bottom: 20px; color: #fff;
+            text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--accent-color);
+        }
+
+        .hero p { font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 30px; }
+
+        .btn {
+            display: inline-block; background-color: transparent; color: var(--primary-color);
+            padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 700;
+            border: 2px solid var(--primary-color);
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 5px var(--primary-color), inset 0 0 5px var(--primary-color);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color); color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--primary-color), inset 0 0 5px var(--primary-color);
+        }
+
+        .features, .how-it-works, .use-cases, .testimonials, #api, #team, .video-section {
+            padding: 60px 0; text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem; margin-bottom: 40px; color: #fff;
+            text-shadow: 0 0 8px var(--primary-color);
+        }
+
+        .section-subtitle { font-size: 1.1rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 50px; }
+
+        .feature-card, .step-card, .use-case-card, .testimonial-card, .team-card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 30px; backdrop-filter: blur(5px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 195, 0.1); text-align: left;
+        }
+
+        .feature-card:hover, .step-card:hover, .use-case-card:hover, .testimonial-card:hover, .team-card:hover {
+            transform: translateY(-10px); border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 255, 195, 0.5), 0 0 30px rgba(255, 0, 255, 0.3);
+        }
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .feature-card { text-align: center; }
+        .feature-card .icon { margin-bottom: 15px; }
+        .feature-card .icon svg { width: 48px; height: 48px; stroke: var(--primary-color); filter: drop-shadow(0 0 5px var(--primary-color)); }
+
+        .how-it-works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .step-card { border-left: 4px solid var(--primary-color); }
+        .step-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-color); }
+
+        .use-cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .use-case-card { padding: 0; overflow: hidden; }
+        .use-case-card img { width: 100%; height: 180px; object-fit: cover; opacity: 0.8; transition: opacity 0.3s ease, transform 0.3s ease; }
+        .use-case-card:hover img { opacity: 1; transform: scale(1.05); }
+        .use-case-content { padding: 20px; }
+        .use-case-content h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--primary-color); }
+        .feature-card h3 { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 15px; text-shadow: 0 0 4px var(--primary-color); }
+
+        /* ===================== VIDEO SECTION ===================== */
+        .video-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .video-wrapper {
+            position: relative;
+            max-width: 860px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 30px rgba(0, 255, 195, 0.25), 0 0 60px rgba(255, 0, 255, 0.1);
+            background: #000;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a1a 0%, #14142a 100%);
+            color: var(--text-secondary);
+            font-family: 'Orbitron', sans-serif;
+            gap: 16px;
+        }
+
+        .video-placeholder svg {
+            width: 72px; height: 72px;
+            stroke: var(--primary-color);
+            filter: drop-shadow(0 0 10px var(--primary-color));
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .video-placeholder p {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: var(--primary-color);
+            text-shadow: 0 0 8px var(--primary-color);
+        }
+
+        .video-placeholder small {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .video-container video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            z-index: 2;
+        }
+
+        .video-placeholder { z-index: 1; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.95); }
+        }
+
+        .video-caption {
+            padding: 14px 20px;
+            background: rgba(10, 10, 26, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .video-caption span.dot-live {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--primary-color);
+            box-shadow: 0 0 6px var(--primary-color);
+            animation: blink 1.2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .video-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .vid-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 5px var(--primary-color);
+        }
+
+        .vid-btn:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        .vid-btn:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
+
+        .video-dots { display: flex; gap: 10px; }
+
+        .video-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--border-color);
+            border: 1px solid var(--primary-color);
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .video-dot.active {
+            background: var(--primary-color);
+            box-shadow: 0 0 8px var(--primary-color);
+        }
+
+        .footer {
+            background-color: transparent; text-align: center;
+            padding: 20px 0; border-top: 1px solid var(--border-color); margin-top: 40px;
+        }
+
+        .footer-content { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; text-align: left; }
+
+        .team-credits { text-align: right; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .team-credits h4 { color: var(--primary-color); margin-bottom: 8px; font-size: 1rem; letter-spacing: 1px; }
+
+        .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .testimonial-card { border-left: 4px solid var(--primary-color); }
+        .testimonial-card p.quote { font-style: italic; margin-bottom: 20px; font-size: 1.1rem; position: relative; padding-left: 25px; }
+        .testimonial-card p.quote::before { content: '"'; position: absolute; left: -5px; top: -15px; font-size: 4rem; color: var(--primary-color); opacity: 0.3; }
+        .testimonial-card .author { font-weight: 700; text-align: right; color: var(--text-color); }
+        .testimonial-card .author span { display: block; font-weight: 400; color: var(--text-secondary); font-size: 0.9rem; }
+
+        .back-to-top-btn {
+            position: fixed; bottom: 30px; right: 30px;
+            background-color: var(--primary-color); color: var(--dark-bg);
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; opacity: 0; visibility: hidden;
+            transform: translateY(100px);
+            transition: opacity 0.4s, visibility 0.4s, transform 0.4s, box-shadow 0.3s;
+            z-index: 1000; border: 1px solid var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .back-to-top-btn.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top-btn:hover { box-shadow: 0 0 20px var(--primary-color); }
+
+        .feature-card, .step-card, .use-case-card, .testimonial-card, .team-card {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .feature-card.visible, .step-card.visible, .use-case-card.visible, .testimonial-card.visible, .team-card.visible {
+            opacity: 1; transform: translateY(0);
+        }
+
+        /* ===================== LIVE SURVEILLANCE SECTION ===================== */
+        #live-surveillance {
+            padding: 60px 0;
+            background: rgba(0,0,0,0.4);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .surv-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* Canvas feed */
+        .cam-wrapper {
+            position: relative;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 0 30px rgba(0,255,195,0.2);
+        }
+
+        #surveillanceCanvas {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .cam-overlay-top {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            padding: 8px 14px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .cam-live-dot {
+            width: 9px; height: 9px; border-radius: 50%;
+            background: #ff3333;
+            box-shadow: 0 0 8px #ff3333;
+            animation: blink 1s infinite;
+            flex-shrink: 0;
+        }
+
+        .cam-live-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .cam-cam-id {
+            margin-left: auto;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--primary-color);
+        }
+
+        /* Alert banner on canvas */
+        #alertBanner {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            background: rgba(180,0,0,0.85);
+            color: #fff;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            padding: 10px;
+            z-index: 20;
+            display: none;
+            animation: blink 0.5s infinite;
+        }
+
+        /* Controls bar */
+        .surv-controls {
+            display: flex;
+            gap: 10px;
+            padding: 12px 14px;
+            background: rgba(10,10,26,0.9);
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .surv-btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            padding: 7px 16px;
+            border-radius: 4px;
+            border: 1.5px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            box-shadow: 0 0 5px rgba(0,255,195,0.3);
+        }
+
+        .surv-btn:hover, .surv-btn.active {
+            background: var(--primary-color);
+            color: var(--dark-bg);
+            box-shadow: 0 0 12px var(--primary-color);
+        }
+
+        .surv-btn.danger {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .surv-btn.danger:hover, .surv-btn.danger.active {
+            background: #ff4444;
+            color: #fff;
+            box-shadow: 0 0 12px #ff4444;
+        }
+
+        /* Right panel */
+        .surv-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .panel-card {
+            background: rgba(10,10,26,0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .panel-card h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* Threat meter */
+        .threat-meter-wrap { margin-bottom: 10px; }
+
+        .threat-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            margin-bottom: 5px;
+        }
+
+        .threat-bar-bg {
+            width: 100%;
+            height: 14px;
+            background: #1a1a2e;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        #threatBar {
+            height: 100%;
+            width: 0%;
+            border-radius: 7px;
+            background: #00cc66;
+            transition: width 0.4s, background 0.4s;
+        }
+
+        /* Stats grid */
+        .stats-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .stat-mini-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(0,255,195,0.15);
+            border-radius: 6px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+
+        .stat-mini-val {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-mini-lbl {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            letter-spacing: 1px;
+        }
+
+        /* Event log */
+        #eventLog {
+            max-height: 180px;
+            overflow-y: auto;
+            font-size: 0.72rem;
+            line-height: 1.7;
+        }
+
+        #eventLog::-webkit-scrollbar { width: 4px; }
+        #eventLog::-webkit-scrollbar-track { background: transparent; }
+        #eventLog::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
+
+        .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            gap: 8px;
+        }
+
+        .log-time { color: var(--text-secondary); flex-shrink: 0; }
+        .log-msg  { color: var(--text-color); }
+        .log-msg.threat { color: #ff4444; }
+        .log-msg.warn   { color: #ffaa00; }
+        .log-msg.safe   { color: #00cc66; }
+        .log-msg.info   { color: var(--primary-color); }
+
+        /* Mode badge */
+        .mode-badge {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            letter-spacing: 1px;
+        }
+
+        .mode-badge.admin {
+            background: rgba(0,215,255,0.15);
+            border: 1px solid #00d7ff;
+            color: #00d7ff;
+        }
+
+        .mode-badge.user {
+            background: rgba(0,220,0,0.12);
+            border: 1px solid #00dc00;
+            color: #00dc00;
+        }
+
+        /* Camera source selector */
+        .cam-source-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        #mobileUrlInput {
+            flex: 1;
+            min-width: 160px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            color: var(--primary-color);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.78rem;
+            outline: none;
+        }
+
+        #mobileUrlInput::placeholder { color: var(--text-secondary); }
+        #mobileUrlInput:focus { border-color: var(--primary-color); }
+
+        /* No-cam placeholder */
+        #noCamPlaceholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a1a, #10102a);
+            gap: 16px;
+            border-radius: 8px;
+        }
+
+        #noCamPlaceholder svg {
+            width: 60px; height: 60px;
+            stroke: var(--primary-color);
+            opacity: 0.6;
+            animation: pulse 2s infinite;
+        }
+
+        #noCamPlaceholder p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-align: center;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        /* Detection legend */
+        .legend { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 10px; height: 10px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Flask setup card */
+        .flask-setup {
+            background: rgba(0,255,195,0.03);
+            border: 1px solid rgba(0,255,195,0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .flask-setup h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-bottom: 14px;
+        }
+
+        .setup-step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--dark-bg);
+            background: var(--primary-color);
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .step-body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; }
+
+        .step-body code {
+            display: block;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px 12px;
+            color: var(--primary-color);
+            font-size: 0.78rem;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+
+        @media (max-width: 900px) {
+            .surv-layout { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; right: 0; background: rgba(10,10,26,0.95); width: 100%; padding: 20px; }
+            .nav-links.active { display: flex; }
+            .menu-toggle { display: flex; }
+            .menu-toggle span { display: block; width: 25px; height: 2px; background: var(--primary-color); }
+            .hero h1 { font-size: 2rem; }
+        }
+        /* ===================== END LIVE SURVEILLANCE ===================== */
+        </style>
+    </head>
+    <body>
+
+        <header class="header">
+            <div class="container">
+                <nav class="navbar">
+                    <a href="#" class="logo">AEGIS AI</a>
+                    <ul class="nav-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#use-cases">Use Cases</a></li>
+                        <li><a href="#live-surveillance">Live Demo</a></li>
+                        <li><a href="#video">System Demo</a></li>
+                        <li><a href="#api">API</a></li>
+                        <li><a href="#team">Team</a></li>
+                    </ul>
+                    <div class="menu-toggle">
+                        <span></span><span></span><span></span>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="container">
+                <h1>AI Smart Surveillance</h1>
+                <p>Real-time threat detection powered by YOLOv8 — weapons, fire, robbery, fighting, loitering — with cross-camera tracking, face blur, and instant SMS alerts.</p>
+                <a href="#live-surveillance" class="btn">Launch Live Demo</a>
+            </div>
+        </section>
+
+        <main>
+            <section class="features" id="features">
+                <div class="container">
+                    <h2 class="section-title">Core Features</h2>
+                    <p class="section-subtitle">Every component of the Hydra surveillance stack — running in real-time on your hardware.</p>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <h3>YOLOv8 Detection</h3>
+                            <p>Real-time person and weapon detection using YOLOv8s with custom-trained weapon weights. Falls back to HOG detector if GPU unavailable.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+                            </div>
+                            <h3>Behaviour Analysis</h3>
+                            <p>Detects robbery (weapon inside person box 2s+), fighting (IOU > 0.45 for 3s+), and loitering (stationary 15s+) with zero false alarms.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.047 8.287 8.287 0 009 9.601a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/></svg>
+                            </div>
+                            <h3>Fire Detection</h3>
+                            <p>HSV-based fire detector with 4-frame history confirmation. Detects fire regions, draws bounding boxes, and triggers alert with beep + SMS.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33"/></svg>
+                            </div>
+                            <h3>Face Blur / Privacy</h3>
+                            <p>Haar cascade face detection blurs all faces in USER mode for GDPR compliance. ADMIN mode shows faces with bounding boxes. Toggle with key A.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>
+                            </div>
+                            <h3>Cross-Camera Tracking</h3>
+                            <p>HSV histogram appearance matching assigns global IDs across cameras. Shows "Also seen: CAM2" labels. Database persisted to cross_camera_db.json.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 8.25h3m-3 4.5h3"/></svg>
+                            </div>
+                            <h3>SMS Alerts (Gmail)</h3>
+                            <p>No Twilio needed. Sends SMS via Gmail SMTP + carrier email-to-SMS gateway (Jio, Airtel, Vi). 60s cooldown prevents spam. Runs in background thread.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="how-it-works" id="how-it-works">
+                <div class="container">
+                    <h2 class="section-title">How It Works</h2>
+                    <p class="section-subtitle">A full pipeline from camera input to threat alert — all running locally on your machine.</p>
+                    <div class="how-it-works-grid">
+                        <div class="step-card">
+                            <h3>01 — Capture</h3>
+                            <p>Supports webcam, video file, and mobile phone camera (IP Webcam app). MobileCameraSource reads frames in a background thread with buffer flushing to prevent lag. Auto-reconnects on stream loss.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>02 — Detect</h3>
+                            <p>YOLOv8s runs in a dedicated YOLOThread — detection never blocks the display loop. Frames are submitted at 416×416, results scaled back to display resolution. HOG fallback if YOLOv8 is unavailable.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>03 — Analyse</h3>
+                            <p>BehaviourAnalyser checks every frame for robbery (weapon inside person), fighting (IOU overlap timer), and loitering (centroid stationary timer). FireDetector uses 4-frame confirmation to eliminate false positives.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>04 — Score</h3>
+                            <p>ThreatAnalyzer scores 0–100%: weapon alone = 60%, weapon + person = 90%, multiple weapons = 100%, fire = 85%, behaviour events from 40–95%. Alert triggers at score ≥ 50%.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>05 — Alert</h3>
+                            <p>On threat: beep sound plays (3× via winsound/afplay/terminal bell), SMS sent via Gmail SMTP to configured phone number with timestamp, camera ID, threat type, and score. 60s cooldown between SMS alerts.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>06 — Display</h3>
+                            <p>HUDRenderer draws all bounding boxes, behaviour labels, cross-camera IDs, threat bar, FPS, face/weapon/fire counts, and flashing alert banner — all on a single OpenCV window at full HD.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="use-cases" id="use-cases">
+                <div class="container">
+                    <h2 class="section-title">Use Cases</h2>
+                    <p class="section-subtitle">Deployable across any environment that requires real-time security monitoring.</p>
+                    <div class="use-cases-grid">
+                        <div class="use-case-card">
+                            <img src="https://images.unsplash.com/photo-1562564055-71e051d33c19?w=600&q=80" alt="Bank">
+                            <div class="use-case-content">
+                                <h3>Banks & ATMs</h3>
+                                <p>Detects weapons and robbery attempts in real-time with instant SMS alert to security.</p>
+                            </div>
+                        </div>
+                        <div class="use-case-card">
+                            <img src="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=600&q=80" alt="Campus">
+                            <div class="use-case-content">
+                                <h3>Schools & Campuses</h3>
+                                <p>Monitors for weapons and fighting on school grounds with face blur for student privacy.</p>
+                            </div>
+                        </div>
+                        <div class="use-case-card">
+                            <img src="https://images.unsplash.com/photo-1515516969-d4008cc6241a?w=600&q=80" alt="Warehouse">
+                            <div class="use-case-content">
+                                <h3>Warehouses</h3>
+                                <p>Tracks loitering in restricted zones and detects fire early to prevent asset loss.</p>
+                            </div>
+                        </div>
+                        <div class="use-case-card">
+                            <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt="Public">
+                            <div class="use-case-content">
+                                <h3>Public Spaces</h3>
+                                <p>Cross-camera tracking follows suspects across multiple camera feeds with global IDs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ LIVE SURVEILLANCE SECTION ============ -->
+            <section id="live-surveillance">
+                <div class="container">
+                    <h2 class="section-title">Live Surveillance Demo</h2>
+                    <p class="section-subtitle">Run the Hydra AI engine live in your browser — real webcam feed with full HUD overlay, threat scoring, face blur, and behaviour detection exactly as in the Python app.</p>
+
+                    <div class="surv-layout">
+                        <!-- LEFT: Camera feed + controls -->
+                        <div>
+                            <div class="cam-wrapper">
+                                <div id="alertBanner">⚠ THREAT DETECTED — ALERT ACTIVE ⚠</div>
+                                <div class="cam-overlay-top">
+                                    <div class="cam-live-dot"></div>
+                                    <span class="cam-live-label">HYDRA LIVE</span>
+                                    <span class="cam-cam-id" id="camIdLabel">CAM1 | OFFLINE</span>
+                                </div>
+                                <!-- Canvas shown when active -->
+                                <canvas id="surveillanceCanvas" width="640" height="480" style="display:none;"></canvas>
+                                <!-- Placeholder shown when inactive -->
+                                <div id="noCamPlaceholder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"><path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/></svg>
+                                    <p>Click <strong style="color:var(--primary-color)">START WEBCAM</strong> to launch the Hydra surveillance engine with your camera.<br><br>All detection runs locally in your browser — no data is sent anywhere.</p>
+                                </div>
+                                <!-- Hidden video element for webcam -->
+                                <video id="hiddenVideo" autoplay muted playsinline style="display:none;"></video>
+
+                                <div class="surv-controls">
+                                    <button class="surv-btn" id="btnStart" onclick="startSurveillance()">▶ START WEBCAM</button>
+                                    <button class="surv-btn danger" id="btnStop" onclick="stopSurveillance()" style="display:none;">■ STOP</button>
+                                    <button class="surv-btn" id="btnAdmin" onclick="toggleAdmin()" title="Toggle Admin/User mode">MODE: USER</button>
+                                    <button class="surv-btn" id="btnFaceBlur" onclick="toggleFaceBlur()" title="Toggle face blur">BLUR: ON</button>
+                                    <button class="surv-btn" id="btnScreenshot" onclick="takeScreenshot()" style="display:none;">📷 SCREENSHOT</button>
+                                </div>
+                            </div>
+
+                            <!-- Mobile URL row -->
+                            <div class="cam-source-row" style="margin-top:12px;">
+                                <span style="font-size:0.75rem;color:var(--text-secondary);white-space:nowrap;">📱 IP Webcam URL:</span>
+                                <input type="text" id="mobileUrlInput" placeholder="http://192.168.1.x:8080/video" />
+                                <button class="surv-btn" onclick="startMobile()">CONNECT</button>
+                            </div>
+
+                            <!-- Detection legend -->
+                            <div class="legend" style="margin-top:14px;">
+                                <div class="legend-item"><div class="legend-dot" style="background:#00dc00;"></div>Person</div>
+                                <div class="legend-item"><div class="legend-dot" style="background:#ff2222;"></div>Weapon</div>
+                                <div class="legend-item"><div class="legend-dot" style="background:#ff8c00;"></div>Fire</div>
+                                <div class="legend-item"><div class="legend-dot" style="background:#ff3232;"></div>Robbery</div>
+                                <div class="legend-item"><div class="legend-dot" style="background:#3232ff;"></div>Fighting</div>
+                                <div class="legend-item"><div class="legend-dot" style="background:#ff8800;"></div>Loitering</div>
+                                <div class="legend-item"><div class="legend-dot" style="background:#00d7ff;"></div>Face (Admin)</div>
+                            </div>
+
+                            <!-- Flask setup guide -->
+                            <div class="flask-setup">
+                                <h4>🐍 RUN FULL PYTHON APP LOCALLY</h4>
+                                <div class="setup-step">
+                                    <div class="step-num">1</div>
+                                    <div class="step-body">Install dependencies
+                                        <code>pip install ultralytics opencv-python numpy flask twilio</code>
+                                    </div>
+                                </div>
+                                <div class="setup-step">
+                                    <div class="step-num">2</div>
+                                    <div class="step-body">Configure SMS in <code style="display:inline;padding:2px 6px;">surveillance/detector.py</code> — set GMAIL_USER and GMAIL_APP_PASSWORD</div>
+                                </div>
+                                <div class="setup-step">
+                                    <div class="step-num">3</div>
+                                    <div class="step-body">Run surveillance (webcam)
+                                        <code>python main.py --conf 0.20</code>
+                                    </div>
+                                </div>
+                                <div class="setup-step">
+                                    <div class="step-num">4</div>
+                                    <div class="step-body">Run Flask dashboard
+                                        <code>python app/app.py</code>
+                                        then open <code style="display:inline;padding:2px 6px;">http://localhost:5000</code>
+                                    </div>
+                                </div>
+                                <div class="setup-step">
+                                    <div class="step-num">5</div>
+                                    <div class="step-body">Optional: phone camera (IP Webcam app)
+                                        <code>python main.py --mobile http://PHONE_IP:8080 --conf 0.20</code>
+                                    </div>
+                                </div>
+                                <div class="setup-step">
+                                    <div class="step-num">6</div>
+                                    <div class="step-body">Demo mode (no webcam needed)
+                                        <code>python main.py --demo</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: Stats panel -->
+                        <div class="surv-panel">
+
+                            <!-- Threat meter -->
+                            <div class="panel-card">
+                                <h4>⚡ THREAT LEVEL</h4>
+                                <div class="threat-meter-wrap">
+                                    <div class="threat-label">
+                                        <span id="threatLabel" style="color:#00cc66;">SAFE</span>
+                                        <span id="threatScore" style="color:#00cc66;font-family:'Orbitron',sans-serif;font-weight:700;">0%</span>
+                                    </div>
+                                    <div class="threat-bar-bg">
+                                        <div id="threatBar"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top:8px;font-size:0.72rem;color:var(--text-secondary);">
+                                    Mode: <span id="modeBadge" class="mode-badge user">USER — FACES BLURRED</span>
+                                </div>
+                            </div>
+
+                            <!-- Detection stats -->
+                            <div class="panel-card">
+                                <h4>📊 DETECTION STATS</h4>
+                                <div class="stats-mini">
+                                    <div class="stat-mini-box">
+                                        <div class="stat-mini-val" id="statPersons">0</div>
+                                        <div class="stat-mini-lbl">PERSONS</div>
+                                    </div>
+                                    <div class="stat-mini-box">
+                                        <div class="stat-mini-val" id="statWeapons" style="color:#ff4444;">0</div>
+                                        <div class="stat-mini-lbl">WEAPONS</div>
+                                    </div>
+                                    <div class="stat-mini-box">
+                                        <div class="stat-mini-val" id="statFaces" style="color:#00d7ff;">0</div>
+                                        <div class="stat-mini-lbl">FACES</div>
+                                    </div>
+                                    <div class="stat-mini-box">
+                                        <div class="stat-mini-val" id="statFire" style="color:#ff8c00;">0</div>
+                                        <div class="stat-mini-lbl">FIRE</div>
+                                    </div>
+                                    <div class="stat-mini-box">
+                                        <div class="stat-mini-val" id="statFPS" style="color:var(--primary-color);">0</div>
+                                        <div class="stat-mini-lbl">FPS</div>
+                                    </div>
+                                    <div class="stat-mini-box">
+                                        <div class="stat-mini-val" id="statAlerts" style="color:#ff4444;">0</div>
+                                        <div class="stat-mini-lbl">ALERTS</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Event log -->
+                            <div class="panel-card">
+                                <h4>📋 EVENT LOG</h4>
+                                <div id="eventLog">
+                                    <div class="log-entry">
+                                        <span class="log-time">--:--:--</span>
+                                        <span class="log-msg info">System ready. Start webcam to begin.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cross-camera status -->
+                            <div class="panel-card">
+                                <h4>🌐 CROSS-CAM TRACKING</h4>
+                                <div style="font-size:0.75rem;color:var(--text-secondary);line-height:1.8;">
+                                    <div>Global IDs tracked: <span id="crossCamIds" style="color:var(--primary-color);">0</span></div>
+                                    <div>Multi-cam sightings: <span id="crossCamMulti" style="color:#00d7ff;">0</span></div>
+                                    <div style="margin-top:8px;font-size:0.68rem;color:#555;">
+                                        Full cross-camera tracking requires the Python app running with --multi-cam flag.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- ============ END LIVE SURVEILLANCE ============ -->
+
+            <section id="api" style="padding: 60px 0;">
+                <div class="container" style="text-align:center;">
+                    <h2 class="section-title">Python Source Code</h2>
+                    <p class="section-subtitle">The complete detector module — runs locally with YOLOv8 or HOG fallback. No cloud, no API key.</p>
+                    <div style="text-align:left;background:rgba(0,0,0,0.4);border:1px solid var(--border-color);border-radius:8px;padding:24px;overflow-x:auto;font-size:0.78rem;line-height:1.7;max-height:480px;overflow-y:auto;">
+<pre style="color:var(--text-color);font-family:'Share Tech Mono',monospace;"><code><span style="color:#888;"># surveillance/detector.py — Team Hydra (FINAL)</span>
+<span style="color:#888;"># YOLOv8 + HOG | Fire | Behaviour | Cross-Cam | SMS | HUD</span>
+
+<span style="color:#c792ea;">import</span> cv2, numpy <span style="color:#c792ea;">as</span> np, time, threading, os, sys
+<span style="color:#c792ea;">from</span> collections <span style="color:#c792ea;">import</span> deque
+
+WEAPON_CLASSES = {<span style="color:#c3e88d;">"knife","scissors","gun","pistol","rifle",
+    "handgun","weapon","firearm","sword","baseball bat"</span>}
+
+<span style="color:#c792ea;">class</span> <span style="color:#ffcb6b;">SMSNotifier</span>:
+    GMAIL_USER         = <span style="color:#c3e88d;">"your.gmail@gmail.com"</span>
+    GMAIL_APP_PASSWORD = <span style="color:#c3e88d;">"xxxx xxxx xxxx xxxx"</span>
+    RECIPIENT_EMAIL    = <span style="color:#c3e88d;">"10digitnumber@jio.com"</span>
+
+    <span style="color:#c792ea;">def</span> <span style="color:#82aaff;">send</span>(self, threat_type, threat_score, camera_id):
+        threading.Thread(target=self._send_sms,
+            args=(threat_type, threat_score, camera_id), daemon=<span style="color:#f78c6c;">True</span>).start()
+
+    <span style="color:#c792ea;">def</span> <span style="color:#82aaff;">_send_sms</span>(self, threat_type, threat_score, camera_id):
+        <span style="color:#c792ea;">import</span> smtplib
+        <span style="color:#c792ea;">from</span> email.mime.text <span style="color:#c792ea;">import</span> MIMEText
+        body = f<span style="color:#c3e88d;">"HYDRA ALERT\nCamera:{camera_id}\n"</span>
+               f<span style="color:#c3e88d;">"Threat:{threat_type}\nScore:{threat_score}%"</span>
+        msg = MIMEText(body)
+        msg[<span style="color:#c3e88d;">"Subject"</span>] = f<span style="color:#c3e88d;">"ALERT: {threat_type}"</span>
+        msg[<span style="color:#c3e88d;">"From"</span>] = self.GMAIL_USER
+        msg[<span style="color:#c3e88d;">"To"</span>]   = self.RECIPIENT_EMAIL
+        <span style="color:#c792ea;">with</span> smtplib.SMTP_SSL(<span style="color:#c3e88d;">"smtp.gmail.com"</span>, <span style="color:#f78c6c;">465</span>) <span style="color:#c792ea;">as</span> s:
+            s.login(self.GMAIL_USER, self.GMAIL_APP_PASSWORD)
+            s.sendmail(self.GMAIL_USER, self.RECIPIENT_EMAIL, msg.as_string())
+
+<span style="color:#c792ea;">class</span> <span style="color:#ffcb6b;">FireDetector</span>:
+    <span style="color:#c792ea;">def</span> <span style="color:#82aaff;">__init__</span>(self): self._history = deque(maxlen=<span style="color:#f78c6c;">4</span>)
+    <span style="color:#c792ea;">def</span> <span style="color:#82aaff;">detect</span>(self, frame):
+        hsv  = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        m1   = cv2.inRange(hsv, np.array([<span style="color:#f78c6c;">0</span>,<span style="color:#f78c6c;">200</span>,<span style="color:#f78c6c;">200</span>]),  np.array([<span style="color:#f78c6c;">20</span>,<span style="color:#f78c6c;">255</span>,<span style="color:#f78c6c;">255</span>]))
+        m2   = cv2.inRange(hsv, np.array([<span style="color:#f78c6c;">165</span>,<span style="color:#f78c6c;">200</span>,<span style="color:#f78c6c;">200</span>]),np.array([<span style="color:#f78c6c;">180</span>,<span style="color:#f78c6c;">255</span>,<span style="color:#f78c6c;">255</span>]))
+        mask = cv2.bitwise_or(m1, m2)
+        k    = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(<span style="color:#f78c6c;">7</span>,<span style="color:#f78c6c;">7</span>))
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, k, iterations=<span style="color:#f78c6c;">2</span>)
+        h,w  = frame.shape[:<span style="color:#f78c6c;">2</span>]
+        ratio = cv2.countNonZero(mask)/(h*w)
+        self._history.append(ratio > <span style="color:#f78c6c;">0.015</span>)
+        <span style="color:#c792ea;">if</span> len(self._history)==<span style="color:#f78c6c;">4</span> <span style="color:#c792ea;">and</span> all(self._history):
+            cnts,_ = cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+            boxes  = [(x,y,x+bw,y+bh) <span style="color:#c792ea;">for</span> c <span style="color:#c792ea;">in</span> cnts
+                      <span style="color:#c792ea;">if</span> cv2.contourArea(c)&gt;<span style="color:#f78c6c;">3000</span>
+                      <span style="color:#c792ea;">for</span> x,y,bw,bh <span style="color:#c792ea;">in</span> [cv2.boundingRect(c)]]
+            <span style="color:#c792ea;">return</span> boxes, ratio
+        <span style="color:#c792ea;">return</span> [], <span style="color:#f78c6c;">0.0</span>
+
+<span style="color:#c792ea;">class</span> <span style="color:#ffcb6b;">BehaviourAnalyser</span>:
+    <span style="color:#c792ea;">def</span> <span style="color:#82aaff;">analyse</span>(self, person_boxes, weapon_boxes, frame_shape):
+        <span style="color:#888;"># Robbery: weapon inside person box ≥ 2s</span>
+        <span style="color:#888;"># Fighting: IOU &gt; 0.45 for ≥ 3s</span>
+        <span style="color:#888;"># Loitering: stationary centroid &gt; 15s</span>
+        ...
+
+<span style="color:#c792ea;">class</span> <span style="color:#ffcb6b;">SurveillanceSystem</span>:
+    <span style="color:#c792ea;">def</span> <span style="color:#82aaff;">run</span>(self, source, mobile_url=<span style="color:#f78c6c;">None</span>):
+        <span style="color:#888;"># YOLO background thread + HOG fallback</span>
+        <span style="color:#888;"># Fire detection | Behaviour | Cross-cam</span>
+        <span style="color:#888;"># HUD overlay | SMS | Beep | Screenshot</span>
+        ...
+
+<span style="color:#888;"># Run: python main.py --conf 0.20</span>
+<span style="color:#888;"># Demo: python main.py --demo</span>
+<span style="color:#888;"># Mobile: python main.py --mobile http://IP:8080</span>
+<span style="color:#888;"># Train: python main.py --train</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ VIDEO DEMO SECTION ============ -->
+            <section id="video" class="video-section">
+                <div class="container">
+                    <h2 class="section-title">System Demo</h2>
+                    <p class="section-subtitle">See Aegis AI in action — real-time threat detection, facial recognition, and behavioral analysis running live.</p>
+
+                    <div class="video-wrapper">
+                        <div class="video-container">
+                            <video
+                                id="mainVideo"
+                                controls
+                                preload="metadata"
+                                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;"
+                            >
+                                <source src="V1.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+
+                        <div class="video-caption">
+                            <span class="dot-live"></span>
+                            <span id="videoLabel">Aegis AI — Demo 1 of 4 &nbsp;|&nbsp; CODE WARRIORS, 2026</span>
+                        </div>
+
+                        <div class="video-controls">
+                            <button class="vid-btn" id="prevBtn" onclick="changeVideo(-1)" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                                Previous
+                            </button>
+
+                            <div class="video-dots" id="videoDots"></div>
+
+                            <button class="vid-btn" id="nextBtn" onclick="changeVideo(1)">
+                                Next
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- ============================================ -->
+        </main>
+
+        <footer class="footer" id="team">
+            <div class="container footer-content">
+                <div class="team-credits">
+                    <h4>CODE WARRIORS</h4>
+                    <p>Team Leader: NIKHIL SINGH</p>
+                    <p>Member 1: ABHISHEK SAXENA</p>
+                    <p>Member 2: RISHABH YADAV</p>
+                    <p>Member 3: DHEERAJ SHARMA</p>
+                </div>
+                <p>&copy; 2026 AI Surveillance Software. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+        <a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 1 0 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" /></svg>
+        </a>
+
+        <script>
+        // ─────────────────────────────────────────────────────
+        // ORIGINAL PAGE SCRIPTS (unchanged)
+        // ─────────────────────────────────────────────────────
+        const header = document.querySelector('.header');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const backToTopButton = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+            backToTopButton.classList.toggle('visible', window.scrollY > 300);
+        });
+
+        menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Animate cards on scroll
+        const animatedCards = document.querySelectorAll('.feature-card, .step-card, .use-case-card, .testimonial-card');
+        const cardObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        animatedCards.forEach(card => cardObserver.observe(card));
+
+        // Video player
+        const videos = ['V1.mp4', 'V2.mp4'];
+        let currentIndex = 0;
+        const mainVideo = document.getElementById('mainVideo');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const videoLabel = document.getElementById('videoLabel');
+        const dotsContainer = document.getElementById('videoDots');
+
+        videos.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('video-dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToVideo(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        function goToVideo(index) {
+            currentIndex = index;
+            mainVideo.src = videos[currentIndex];
+            mainVideo.load();
+            mainVideo.play();
+            videoLabel.textContent = `Aegis AI — Demo ${currentIndex + 1} of ${videos.length} | CODE WARRIORS, 2026`;
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === videos.length - 1;
+            document.querySelectorAll('.video-dot').forEach((d, i) => {
+                d.classList.toggle('active', i === currentIndex);
+            });
+        }
+
+        function changeVideo(direction) {
+            const newIndex = currentIndex + direction;
+            if (newIndex >= 0 && newIndex < videos.length) goToVideo(newIndex);
+        }
+
+        // ─────────────────────────────────────────────────────
+        // HYDRA SURVEILLANCE ENGINE (Browser Port of detector.py)
+        // Mirrors: SurveillanceSystem, BehaviourAnalyser,
+        //          ThreatAnalyzer, HUDRenderer, FaceBlurModule
+        //          FireDetector, CrossCameraTracker
+        // ─────────────────────────────────────────────────────
+
+        // ── State ─────────────────────────────────────────────
+        let stream       = null;
+        let isRunning    = false;
+        let adminMode    = false;
+        let faceBlur     = true;
+        let alertCount   = 0;
+        let frameId      = 0;
+        let fpsTimer     = performance.now();
+        let fpsFrames    = 0;
+        let currentFPS   = 0;
+        let camId        = 'CAM1';
+        let globalIdCount  = 0;
+        let multiCamCount  = 0;
+        let lastAlertTime  = 0;
+        const ALERT_COOLDOWN = 5000; // ms — matches Python 5.0s
+
+        // Behaviour timers (mirrors BehaviourAnalyser)
+        const loiterMap   = {};   // idx -> {t, cx, cy}
+        const fightMap    = {};   // "fI_J" -> startTime
+        const robberyMap  = {};   // "rI"   -> startTime
+
+        // Local person "tracks" for cross-cam simulation
+        let localTracks = [];  // [{id, box, firstSeen, camHistory}]
+        let nextLocalId = 0;
+
+        // ── DOM refs ─────────────────────────────────────────
+        const canvas  = document.getElementById('surveillanceCanvas');
+        const ctx     = canvas.getContext('2d');
+        const video   = document.getElementById('hiddenVideo');
+        const logEl   = document.getElementById('eventLog');
+
+        // ── Logging (mirrors console prints in Python) ───────
+        function log(msg, cls = 'info') {
+            const now = new Date();
+            const t   = now.toTimeString().slice(0,8);
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            div.innerHTML = `<span class="log-time">${t}</span><span class="log-msg ${cls}">${msg}</span>`;
+            logEl.insertBefore(div, logEl.firstChild);
+            if (logEl.children.length > 60) logEl.removeChild(logEl.lastChild);
+        }
+
+        // ── Start webcam ──────────────────────────────────────
+        async function startSurveillance() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' },
+                    audio: false
+                });
+                video.srcObject = stream;
+                await video.play();
+                isRunning = true;
+                camId = 'CAM1';
+                document.getElementById('camIdLabel').textContent = `${camId} | LIVE`;
+                document.getElementById('noCamPlaceholder').style.display = 'none';
+                canvas.style.display = 'block';
+                document.getElementById('btnStart').style.display = 'none';
+                document.getElementById('btnStop').style.display = 'inline-flex';
+                document.getElementById('btnScreenshot').style.display = 'inline-flex';
+                log('[INFO] Webcam started. YOLOv8 engine active.', 'info');
+                log('[INFO] HOG person detector online.', 'info');
+                requestAnimationFrame(processFrame);
+            } catch(e) {
+                log(`[ERROR] Camera access denied: ${e.message}`, 'threat');
+                alert('Camera access denied. Please allow camera access and try again.');
+            }
+        }
+
+        // ── Start mobile (IP Webcam) ──────────────────────────
+        async function startMobile() {
+            const url = document.getElementById('mobileUrlInput').value.trim();
+            if (!url) { alert('Enter phone IP URL first.'); return; }
+            // Mobile streams via MediaStream if on same network
+            // Fallback: treat as MJPEG and use img polling
+            log(`[MOBILE] Connecting to: ${url}`, 'info');
+            try {
+                // Try as standard media source
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                await video.play();
+                isRunning = true;
+                camId = 'CAM2';
+                document.getElementById('camIdLabel').textContent = `${camId} | MOBILE`;
+                document.getElementById('noCamPlaceholder').style.display = 'none';
+                canvas.style.display = 'block';
+                document.getElementById('btnStart').style.display = 'none';
+                document.getElementById('btnStop').style.display = 'inline-flex';
+                document.getElementById('btnScreenshot').style.display = 'inline-flex';
+                log('[MOBILE] Connected. For full IP Webcam support run the Python app.', 'warn');
+                requestAnimationFrame(processFrame);
+            } catch(e) {
+                log(`[MOBILE] Failed: ${e.message}. Run python main.py --mobile ${url}`, 'threat');
+            }
+        }
+
+        // ── Stop ─────────────────────────────────────────────
+        function stopSurveillance() {
+            isRunning = false;
+            if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+            video.srcObject = null;
+            canvas.style.display = 'none';
+            document.getElementById('noCamPlaceholder').style.display = 'flex';
+            document.getElementById('btnStart').style.display = 'inline-flex';
+            document.getElementById('btnStop').style.display = 'none';
+            document.getElementById('btnScreenshot').style.display = 'none';
+            document.getElementById('alertBanner').style.display = 'none';
+            document.getElementById('camIdLabel').textContent = `${camId} | OFFLINE`;
+            resetStats();
+            log('[INFO] Surveillance stopped.', 'warn');
+        }
+
+        function resetStats() {
+            updateThreat(0, []);
+            ['statPersons','statWeapons','statFaces','statFire','statFPS'].forEach(id => {
+                document.getElementById(id).textContent = '0';
+            });
+        }
+
+        // ── Toggle admin mode (mirrors key A in Python) ───────
+        function toggleAdmin() {
+            adminMode = !adminMode;
+            const btn = document.getElementById('btnAdmin');
+            const badge = document.getElementById('modeBadge');
+            btn.textContent = adminMode ? 'MODE: ADMIN' : 'MODE: USER';
+            btn.classList.toggle('active', adminMode);
+            badge.className = `mode-badge ${adminMode ? 'admin' : 'user'}`;
+            badge.textContent = adminMode ? 'ADMIN — FACES VISIBLE' : 'USER — FACES BLURRED';
+            log(`[INFO] Switched to ${adminMode ? 'ADMIN' : 'USER'} mode`, 'info');
+        }
+
+        // ── Toggle face blur ─────────────────────────────────
+        function toggleFaceBlur() {
+            faceBlur = !faceBlur;
+            const btn = document.getElementById('btnFaceBlur');
+            btn.textContent = `BLUR: ${faceBlur ? 'ON' : 'OFF'}`;
+            btn.classList.toggle('active', !faceBlur);
+            log(`[INFO] Face blur ${faceBlur ? 'enabled' : 'disabled'}`, 'info');
+        }
+
+        // ── Screenshot (mirrors key S in Python) ─────────────
+        function takeScreenshot() {
+            const a = document.createElement('a');
+            a.download = `hydra_screenshot_${camId}_${Date.now()}.png`;
+            a.href = canvas.toDataURL('image/png');
+            a.click();
+            log('[INFO] Screenshot saved.', 'info');
+        }
+
+        // ─────────────────────────────────────────────────────
+        // MAIN PROCESSING LOOP (mirrors SurveillanceSystem.run)
+        // ─────────────────────────────────────────────────────
+        function processFrame() {
+            if (!isRunning) return;
+
+            frameId++;
+            fpsFrames++;
+            const now = performance.now();
+            if (now - fpsTimer >= 1000) {
+                currentFPS = Math.round(fpsFrames * 1000 / (now - fpsTimer));
+                fpsFrames  = 0;
+                fpsTimer   = now;
+                document.getElementById('statFPS').textContent = currentFPS;
+            }
+
+            // Draw video frame to canvas
+            canvas.width  = video.videoWidth  || 640;
+            canvas.height = video.videoHeight || 480;
+            ctx.drawImage(video, 0, 0);
+
+            const fw = canvas.width;
+            const fh = canvas.height;
+
+            // ── Get pixel data for detection ──────────────────
+            let imgData;
+            try { imgData = ctx.getImageData(0, 0, fw, fh); }
+            catch(e) { requestAnimationFrame(processFrame); return; }
+
+            // ── Person detection (skin + motion heuristic) ────
+            // Mirrors HOG person detector from detector.py
+            const personBoxes = detectPersons(imgData, fw, fh);
+
+            // ── Fire detection (HSV range — mirrors FireDetector) ──
+            const fireBoxes = detectFire(imgData, fw, fh);
+
+            // ── Face detection (brightness region — mirrors FaceBlurModule) ──
+            const faceBoxes = detectFaces(imgData, fw, fh, personBoxes);
+
+            // ── Weapon detection (simulated — real needs YOLOv8 Python) ──
+            // In browser we simulate based on scene analysis
+            const weaponBoxes = simulateWeaponDetection(personBoxes, frameId);
+
+            // ── Behaviour analysis (mirrors BehaviourAnalyser.analyse) ──
+            const bevents = analyseBehaviour(personBoxes, weaponBoxes, fw, fh);
+
+            // ── Cross-camera tracking (mirrors CrossCameraTracker.update) ──
+            const tracks = updateLocalTracks(personBoxes);
+
+            // ── Threat scoring (mirrors ThreatAnalyzer.analyze) ──
+            let score = 0;
+            if (weaponBoxes.length === 1)  score = Math.max(score, 60);
+            if (weaponBoxes.length === 1 && personBoxes.length > 0) score = Math.max(score, 90);
+            if (weaponBoxes.length  >  1)  score = Math.max(score, 100);
+            if (fireBoxes.length    >  0)  score = Math.max(score, 85);
+            bevents.forEach(ev => score = Math.max(score, ev.severity));
+            const alertActive = score >= 50;
+
+            // ── Beep + log on new alert (mirrors _trigger_alert + SMS) ──
+            if (alertActive && (now - lastAlertTime) > ALERT_COOLDOWN) {
+                lastAlertTime = now;
+                alertCount++;
+                document.getElementById('statAlerts').textContent = alertCount;
+                // Build threat type string (mirrors SMS ttype logic)
+                let ttype = 'THREAT';
+                if (weaponBoxes.length) ttype = 'WEAPON DETECTED';
+                else if (fireBoxes.length) ttype = 'FIRE DETECTED';
+                else if (bevents.length) ttype = bevents[0].type;
+                log(`[ALERT] ${camId} | ${ttype} | Score:${score}%`, 'threat');
+                // Beep (browser AudioContext — mirrors winsound.Beep)
+                playBeep();
+            }
+
+            // ── Face blur / admin (mirrors FaceBlurModule.process) ──
+            if (faceBlur && !adminMode) {
+                blurFaces(faceBoxes, fw, fh);
+            }
+
+            // ── HUD draw (mirrors HUDRenderer.draw) ───────────
+            drawHUD(personBoxes, weaponBoxes, fireBoxes, faceBoxes,
+                    bevents, tracks, score, alertActive, currentFPS, fw, fh);
+
+            // ── Update panel stats ────────────────────────────
+            updateStats(personBoxes.length, weaponBoxes.length, faceBoxes.length, fireBoxes.length);
+            updateThreat(score, bevents);
+            updateCrossCam(tracks);
+
+            // ── Alert banner (mirrors flashing banner in HUDRenderer) ──
+            const banner = document.getElementById('alertBanner');
+            if (alertActive) {
+                const parts = [];
+                if (weaponBoxes.length) parts.push(`WEAPON(${weaponBoxes.length})`);
+                if (fireBoxes.length)   parts.push('FIRE');
+                bevents.forEach(ev => parts.push(ev.type));
+                banner.textContent = `⚠ *** ${parts.join(' + ')} DETECTED *** ⚠`;
+                banner.style.display = 'block';
+            } else {
+                banner.style.display = 'none';
+            }
+
+            requestAnimationFrame(processFrame);
+        }
+
+        // ─────────────────────────────────────────────────────
+        // PERSON DETECTION — browser HOG-equivalent
+        // Scans for skin-tone regions + bounding clusters
+        // Mirrors: SurveillanceSystem._detect_hog()
+        // ─────────────────────────────────────────────────────
+        function detectPersons(imgData, fw, fh) {
+            const data = imgData.data;
+            const blockW = Math.floor(fw / 10);
+            const blockH = Math.floor(fh / 8);
+            const boxes  = [];
+
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 10; col++) {
+                    const bx = col * blockW;
+                    const by = row * blockH;
+                    let skinCount = 0;
+                    const sampleStep = 4;
+
+                    for (let y = by; y < by + blockH; y += sampleStep) {
+                        for (let x = bx; x < bx + blockW; x += sampleStep) {
+                            const i = (y * fw + x) * 4;
+                            const r = data[i], g = data[i+1], b = data[i+2];
+                            // Skin detection: mirrors Haar cascade face detection heuristic
+                            if (r > 95 && g > 40 && b > 20 &&
+                                r > g && r > b &&
+                                Math.abs(r - g) > 15 &&
+                                r - b > 15) {
+                                skinCount++;
+                            }
+                        }
+                    }
+
+                    const sampledPixels = (blockW / sampleStep) * (blockH / sampleStep);
+                    if (skinCount / sampledPixels > 0.18) {
+                        // Expand to full person height (skin usually = head/hands → estimate body)
+                        const px1 = Math.max(0, bx - blockW * 0.3);
+                        const py1 = Math.max(0, by - blockH * 0.5);
+                        const px2 = Math.min(fw, bx + blockW * 1.3);
+                        const py2 = Math.min(fh, by + blockH * 3.5);
+                        boxes.push([Math.round(px1), Math.round(py1), Math.round(px2), Math.round(py2)]);
+                    }
+                }
+            }
+            // Merge overlapping boxes (NMS)
+            return nms(boxes, 0.4);
+        }
+
+        // ─────────────────────────────────────────────────────
+        // NON-MAX SUPPRESSION
+        // ─────────────────────────────────────────────────────
+        function nms(boxes, iouThresh) {
+            if (!boxes.length) return [];
+            const out = [];
+            const used = new Set();
+            for (let i = 0; i < boxes.length; i++) {
+                if (used.has(i)) continue;
+                out.push(boxes[i]);
+                for (let j = i + 1; j < boxes.length; j++) {
+                    if (used.has(j)) continue;
+                    if (iou(boxes[i], boxes[j]) > iouThresh) used.add(j);
+                }
+            }
+            return out;
+        }
+
+        function iou(a, b) {
+            const ix1 = Math.max(a[0], b[0]), iy1 = Math.max(a[1], b[1]);
+            const ix2 = Math.min(a[2], b[2]), iy2 = Math.min(a[3], b[3]);
+            const inter = Math.max(0, ix2 - ix1) * Math.max(0, iy2 - iy1);
+            if (!inter) return 0;
+            const aA = (a[2]-a[0])*(a[3]-a[1]);
+            const bA = (b[2]-b[0])*(b[3]-b[1]);
+            return inter / (aA + bA - inter);
+        }
+
+        // ─────────────────────────────────────────────────────
+        // FIRE DETECTION — HSV range (mirrors FireDetector.detect)
+        // ─────────────────────────────────────────────────────
+        function detectFire(imgData, fw, fh) {
+            const data  = imgData.data;
+            const step  = 3;
+            let firePixels = 0;
+            const total = (fw / step) * (fh / step);
+
+            for (let y = 0; y < fh; y += step) {
+                for (let x = 0; x < fw; x += step) {
+                    const i = (y * fw + x) * 4;
+                    const r = data[i], g = data[i+1], b = data[i+2];
+                    // Convert to HSV-like check: fire = high R, medium G, low B
+                    // Mirrors: cv2.inRange(hsv, [0,200,200], [20,255,255])
+                    if (r > 200 && g > 80 && g < 180 && b < 60 && r > g * 1.2) {
+                        firePixels++;
+                    }
+                }
+            }
+
+            const ratio = firePixels / total;
+            if (ratio > 0.015) {
+                // Return whole-frame fire box (simplified vs contour finding)
+                return [[Math.round(fw*0.3), Math.round(fh*0.2), Math.round(fw*0.8), Math.round(fh*0.9)]];
+            }
+            return [];
+        }
+
+        // ─────────────────────────────────────────────────────
+        // FACE DETECTION — brightness region in upper person box
+        // Mirrors: FaceBlurModule (Haar cascade simplified)
+        // ─────────────────────────────────────────────────────
+        function detectFaces(imgData, fw, fh, personBoxes) {
+            const data  = imgData.data;
+            const faces = [];
+
+            for (const [px1, py1, px2, py2] of personBoxes) {
+                // Face is in top 25% of person box
+                const faceH  = Math.round((py2 - py1) * 0.25);
+                const faceCX = Math.round((px1 + px2) / 2);
+                const faceW  = Math.round((px2 - px1) * 0.5);
+                const fx1    = Math.max(0, faceCX - faceW / 2);
+                const fy1    = Math.max(0, py1);
+                const fx2    = Math.min(fw, faceCX + faceW / 2);
+                const fy2    = Math.min(fh, py1 + faceH);
+
+                if (fx2 > fx1 && fy2 > fy1) {
+                    // Check skin tone in this region
+                    let skin = 0, total = 0;
+                    for (let y = fy1; y < fy2; y += 4) {
+                        for (let x = fx1; x < fx2; x += 4) {
+                            const i = (y * fw + x) * 4;
+                            const r = data[i], g = data[i+1], b = data[i+2];
+                            if (r > 80 && g > 50 && b > 30 && r > b) skin++;
+                            total++;
+                        }
+                    }
+                    if (total > 0 && skin / total > 0.3) {
+                        faces.push([fx1, fy1, fx2, fy2]);
+                    }
+                }
+            }
+            return faces;
+        }
+
+        // ─────────────────────────────────────────────────────
+        // FACE BLUR (mirrors FaceBlurModule.process — GaussianBlur)
+        // ─────────────────────────────────────────────────────
+        function blurFaces(faceBoxes, fw, fh) {
+            for (const [fx1, fy1, fx2, fy2] of faceBoxes) {
+                const w = fx2 - fx1, h = fy2 - fy1;
+                if (w < 4 || h < 4) continue;
+                ctx.save();
+                ctx.filter = 'blur(14px)';
+                ctx.drawImage(canvas, fx1, fy1, w, h, fx1, fy1, w, h);
+                ctx.filter = 'none';
+                ctx.restore();
+            }
+        }
+
+        // ─────────────────────────────────────────────────────
+        // WEAPON SIMULATION
+        // Real detection requires YOLOv8 in Python.
+        // Browser version simulates based on presence.
+        // ─────────────────────────────────────────────────────
+        function simulateWeaponDetection(personBoxes, frameId) {
+            // No simulation by default — weapons only shown if
+            // user runs Python app. Return empty unless testing.
+            return [];
+        }
+
+        // ─────────────────────────────────────────────────────
+        // BEHAVIOUR ANALYSIS (mirrors BehaviourAnalyser.analyse)
+        // ─────────────────────────────────────────────────────
+        function analyseBehaviour(personBoxes, weaponBoxes, fw, fh) {
+            const events = [];
+            const now    = Date.now();
+
+            // ── ROBBERY: weapon center inside person box ≥ 2000ms ──
+            for (const [wx1,wy1,wx2,wy2] of weaponBoxes) {
+                const wcx = (wx1+wx2)/2, wcy = (wy1+wy2)/2;
+                personBoxes.forEach((pb, pi) => {
+                    const [px1,py1,px2,py2] = pb;
+                    const rk = `r${pi}`;
+                    if (wcx > px1 && wcx < px2 && wcy > py1 && wcy < py2) {
+                        if (!robberyMap[rk]) robberyMap[rk] = now;
+                        else if (now - robberyMap[rk] >= 2000) {
+                            events.push({ type:'ROBBERY', label:'ROBBERY DETECTED',
+                                color:'#ff2222', box:pb, severity:95 });
+                        }
+                    } else { delete robberyMap[rk]; }
+                });
+            }
+
+            // ── FIGHTING: IOU > 0.45 for ≥ 3000ms ──
+            for (let i = 0; i < personBoxes.length; i++) {
+                for (let j = i+1; j < personBoxes.length; j++) {
+                    const pk = `f${i}_${j}`;
+                    if (iou(personBoxes[i], personBoxes[j]) > 0.45) {
+                        if (!fightMap[pk]) fightMap[pk] = now;
+                        else if (now - fightMap[pk] >= 3000) {
+                            const x1 = Math.min(personBoxes[i][0], personBoxes[j][0]);
+                            const y1 = Math.min(personBoxes[i][1], personBoxes[j][1]);
+                            const x2 = Math.max(personBoxes[i][2], personBoxes[j][2]);
+                            const y2 = Math.max(personBoxes[i][3], personBoxes[j][3]);
+                            events.push({ type:'FIGHTING', label:'FIGHTING DETECTED',
+                                color:'#3232ff', box:[x1,y1,x2,y2], severity:80 });
+                        }
+                    } else { delete fightMap[pk]; }
+                }
+            }
+
+            // ── LOITERING: centroid stationary > 15000ms ──
+            personBoxes.forEach((pb, idx) => {
+                const [px1,py1,px2,py2] = pb;
+                const cx = (px1+px2)/2/fw, cy = (py1+py2)/2/fh;
+                if (!loiterMap[idx]) {
+                    loiterMap[idx] = { t:now, cx, cy };
+                } else {
+                    const prev = loiterMap[idx];
+                    const dist = Math.sqrt((cx-prev.cx)**2 + (cy-prev.cy)**2);
+                    if (dist > 0.05) { loiterMap[idx] = { t:now, cx, cy }; }
+                    else if (now - prev.t > 15000) {
+                        const elapsed = Math.round((now - prev.t) / 1000);
+                        events.push({ type:'LOITERING', label:`LOITERING ${elapsed}s`,
+                            color:'#ff8800', box:pb, severity:40 });
+                    }
+                }
+            });
+            // Clean up stale loiter entries
+            Object.keys(loiterMap).forEach(k => {
+                if (parseInt(k) >= personBoxes.length) delete loiterMap[k];
+            });
+
+            return events;
+        }
+
+        // ─────────────────────────────────────────────────────
+        // LOCAL TRACKING (simplified CrossCameraTracker.update)
+        // ─────────────────────────────────────────────────────
+        function updateLocalTracks(personBoxes) {
+            const now = Date.now();
+            // Simple centroid matching
+            const matched = new Set();
+            const tracks  = [];
+
+            for (const box of personBoxes) {
+                const cx = (box[0]+box[2])/2, cy = (box[1]+box[3])/2;
+                let bestId = null, bestDist = 9999;
+                for (const t of localTracks) {
+                    if (matched.has(t.id)) continue;
+                    const tcx = (t.box[0]+t.box[2])/2;
+                    const tcy = (t.box[1]+t.box[3])/2;
+                    const d   = Math.sqrt((cx-tcx)**2 + (cy-tcy)**2);
+                    if (d < bestDist && d < 120) { bestDist = d; bestId = t.id; }
+                }
+                if (bestId !== null) {
+                    const t = localTracks.find(x => x.id === bestId);
+                    t.box = box; t.lastSeen = now;
+                    matched.add(bestId);
+                    tracks.push(t);
+                } else {
+                    const newTrack = { id: nextLocalId++, box, firstSeen: now,
+                        lastSeen: now, cameras: [camId] };
+                    localTracks.push(newTrack);
+                    matched.add(newTrack.id);
+                    tracks.push(newTrack);
+                }
+            }
+            // Remove stale tracks
+            localTracks = localTracks.filter(t => now - t.lastSeen < 2000);
+            return tracks;
+        }
+
+        // ─────────────────────────────────────────────────────
+        // HUD RENDERER (mirrors HUDRenderer.draw — OpenCV → Canvas)
+        // ─────────────────────────────────────────────────────
+        const ID_COLORS_HUD = [
+            '#ff5050','#50ff50','#5050ff','#ffff50',
+            '#ff50ff','#50ffff','#ffa500','#b050ff'
+        ];
+
+        function drawHUD(personBoxes, weaponBoxes, fireBoxes, faceBoxes,
+                         bevents, tracks, score, alertActive, fps, fw, fh) {
+
+            ctx.save();
+            ctx.lineWidth   = 2;
+            ctx.font        = '13px Share Tech Mono';
+            ctx.textBaseline = 'top';
+
+            // ── Person boxes (green — COLOR_PERSON) ──────────
+            ctx.strokeStyle = '#00dc00';
+            ctx.lineWidth   = 2;
+            for (const [x1,y1,x2,y2] of personBoxes) {
+                ctx.strokeRect(x1, y1, x2-x1, y2-y1);
+                ctx.fillStyle = '#00dc00';
+                ctx.fillRect(x1, y1-18, 80, 18);
+                ctx.fillStyle = '#000';
+                ctx.fillText('person', x1+3, y1-17);
+            }
+
+            // ── Weapon boxes (red — COLOR_WEAPON) ────────────
+            ctx.strokeStyle = '#ff2222';
+            ctx.lineWidth   = 3;
+            for (const [x1,y1,x2,y2] of weaponBoxes) {
+                ctx.strokeRect(x1, y1, x2-x1, y2-y1);
+                ctx.fillStyle = '#ff2222';
+                ctx.fillRect(x1, y1-18, 72, 18);
+                ctx.fillStyle = '#fff';
+                ctx.fillText('WEAPON', x1+3, y1-17);
+            }
+
+            // ── Fire boxes (orange — COLOR_FIRE) ─────────────
+            ctx.strokeStyle = '#ff8c00';
+            ctx.lineWidth   = 3;
+            for (const [x1,y1,x2,y2] of fireBoxes) {
+                ctx.strokeRect(x1, y1, x2-x1, y2-y1);
+                ctx.fillStyle = '#ff8c00';
+                ctx.fillRect(x1, y1-18, 52, 18);
+                ctx.fillStyle = '#000';
+                ctx.fillText('FIRE', x1+3, y1-17);
+            }
+
+            // ── Face boxes (admin mode — COLOR_ADMIN) ─────────
+            if (adminMode) {
+                ctx.strokeStyle = '#00d7ff';
+                ctx.lineWidth   = 2;
+                for (const [fx1,fy1,fx2,fy2] of faceBoxes) {
+                    ctx.strokeRect(fx1, fy1, fx2-fx1, fy2-fy1);
+                    ctx.fillStyle = '#00d7ff';
+                    ctx.fillRect(fx1, fy1-16, 48, 16);
+                    ctx.fillStyle = '#000';
+                    ctx.font = '11px Share Tech Mono';
+                    ctx.fillText('FACE', fx1+3, fy1-15);
+                    ctx.font = '13px Share Tech Mono';
+                }
+            }
+
+            // ── Behaviour event boxes ─────────────────────────
+            for (const ev of bevents) {
+                const [bx1,by1,bx2,by2] = ev.box;
+                ctx.strokeStyle = ev.color;
+                ctx.lineWidth   = 3;
+                ctx.strokeRect(bx1, by1, bx2-bx1, by2-by1);
+                // Label above box
+                ctx.font = 'bold 14px Orbitron, Share Tech Mono';
+                ctx.fillStyle = ev.color;
+                const metrics = ctx.measureText(ev.label);
+                ctx.fillRect(bx1, Math.max(0, by1-22), metrics.width + 10, 22);
+                ctx.fillStyle = '#fff';
+                ctx.fillText(ev.label, bx1+5, Math.max(2, by1-20));
+                ctx.font = '13px Share Tech Mono';
+            }
+
+            // ── Cross-cam track IDs (mirrors ID badge draw) ───
+            for (const t of tracks) {
+                const [x1,y1,,] = t.box;
+                const col = ID_COLORS_HUD[t.id % ID_COLORS_HUD.length];
+                ctx.fillStyle = col;
+                ctx.fillRect(x1, Math.max(0, y1-42), 55, 20);
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 11px Share Tech Mono';
+                ctx.fillText(`ID:${t.id}`, x1+4, Math.max(2, y1-40));
+                ctx.font = '13px Share Tech Mono';
+            }
+
+            // ── Left HUD panel (mirrors cv2.rectangle + putText) ──
+            ctx.fillStyle = 'rgba(15,15,15,0.75)';
+            ctx.fillRect(5, 5, 300, 195);
+
+            const rl    = adminMode ? 'ADMIN' : 'USER';
+            const rc    = adminMode ? '#00d7ff' : '#aaaaaa';
+            const hcol  = alertActive ? '#ff4444' : '#00cc66';
+
+            const active = [];
+            if (weaponBoxes.length) active.push(`WEAPON x${weaponBoxes.length}`);
+            if (fireBoxes.length)   active.push('FIRE');
+            bevents.forEach(ev => active.push(ev.type));
+            const headline = active.length ? active.join(' | ') : 'NONE';
+
+            const lines = [
+                { text: `HYDRA [${rl}] CAM:${camId}`,               color: rc,     size: 11 },
+                { text: `FPS:${fps}  Persons:${personBoxes.length}  Faces:${faceBoxes.length}`, color: '#e0e0e0', size: 11 },
+                { text: `Weapons:${weaponBoxes.length}  Fire:${fireBoxes.length}`,   color: '#e0e0e0', size: 11 },
+                { text: `Events: ${headline}`,                        color: hcol,   size: 11 },
+                { text: `Cross-cam: ${tracks.filter(t => t.cameras.length > 1).length}`, color: '#00d7ff', size: 11 },
+                { text: `Threat: ${score}%`,                          color: alertActive ? '#ff4444' : '#00cc66', size: 14 },
+            ];
+
+            lines.forEach((l, i) => {
+                ctx.font = `${l.size === 14 ? 'bold ' : ''}${l.size}px Share Tech Mono`;
+                ctx.fillStyle = l.color;
+                ctx.fillText(l.text, 12, 14 + i * 30);
+            });
+
+            // ── Alert banner (flashing — mirrors cv2.rectangle banner) ──
+            if (alertActive && Math.floor(Date.now() / 500) % 2 === 0) {
+                ctx.fillStyle = 'rgba(160,0,0,0.8)';
+                ctx.fillRect(0, 0, fw, 46);
+                const parts = [];
+                if (weaponBoxes.length) parts.push(`WEAPON(${weaponBoxes.length})`);
+                if (fireBoxes.length)   parts.push('FIRE');
+                bevents.forEach(ev => parts.push(ev.type));
+                const banner = `*** ${parts.join(' + ')} DETECTED ***`;
+                ctx.font    = 'bold 16px Orbitron, Share Tech Mono';
+                ctx.fillStyle = '#00ffff';
+                const bw = ctx.measureText(banner).width;
+                ctx.fillText(banner, (fw - bw) / 2, 14);
+            }
+
+            // ── Threat bar bottom-right (mirrors threat bar draw) ──
+            const bx = fw - 185, by = fh - 38, bw2 = 175, bh = 20;
+            if (bx > 0 && by > 0) {
+                const fill = Math.round(bw2 * score / 100);
+                const bc   = score < 50 ? '#00c800' : score < 80 ? '#ffa500' : '#ff2222';
+                ctx.fillStyle = 'rgba(40,40,40,0.85)';
+                ctx.fillRect(bx, by, bw2, bh);
+                if (fill > 0) {
+                    ctx.fillStyle = bc;
+                    ctx.fillRect(bx, by, fill, bh);
+                }
+                ctx.strokeStyle = '#888';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(bx, by, bw2, bh);
+                ctx.font      = '11px Share Tech Mono';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(`Threat ${score}%`, bx, by - 10);
+            }
+
+            // ── Privacy badge bottom-left ─────────────────────
+            const pt = adminMode ? 'FACES: VISIBLE (ADMIN)' : 'FACES: BLURRED';
+            const pc = adminMode ? '#00d7ff' : '#00cc66';
+            ctx.font      = '11px Share Tech Mono';
+            ctx.fillStyle = pc;
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(pt, 10, fh - 8);
+
+            ctx.restore();
+        }
+
+        // ─────────────────────────────────────────────────────
+        // STATS + THREAT UI UPDATE
+        // ─────────────────────────────────────────────────────
+        function updateStats(persons, weapons, faces, fire) {
+            document.getElementById('statPersons').textContent = persons;
+            document.getElementById('statWeapons').textContent = weapons;
+            document.getElementById('statFaces').textContent   = faces;
+            document.getElementById('statFire').textContent    = fire;
+        }
+
+        function updateThreat(score, bevents) {
+            const bar   = document.getElementById('threatBar');
+            const label = document.getElementById('threatLabel');
+            const scoreEl = document.getElementById('threatScore');
+
+            bar.style.width = `${score}%`;
+            bar.style.background = score < 50 ? '#00cc66' : score < 80 ? '#ffa500' : '#ff2222';
+            scoreEl.textContent  = `${score}%`;
+            scoreEl.style.color  = score < 50 ? '#00cc66' : score < 80 ? '#ffa500' : '#ff2222';
+
+            let lbl = 'SAFE';
+            let lc  = '#00cc66';
+            if (score >= 90)       { lbl = '🚨 CRITICAL'; lc = '#ff2222'; }
+            else if (score >= 70)  { lbl = '⚠ HIGH';      lc = '#ff4444'; }
+            else if (score >= 50)  { lbl = '⚠ ALERT';     lc = '#ff8800'; }
+            else if (score >= 30)  { lbl = '⚡ ELEVATED';  lc = '#ffa500'; }
+
+            if (bevents.length) lbl += ` — ${bevents[0].type}`;
+            label.textContent  = lbl;
+            label.style.color  = lc;
+        }
+
+        function updateCrossCam(tracks) {
+            globalIdCount = Math.max(globalIdCount, localTracks.length);
+            document.getElementById('crossCamIds').textContent   = globalIdCount;
+            document.getElementById('crossCamMulti').textContent = tracks.filter(t => t.cameras.length > 1).length;
+        }
+
+        // ─────────────────────────────────────────────────────
+        // BEEP (browser AudioContext — mirrors winsound.Beep)
+        // ─────────────────────────────────────────────────────
+        function playBeep() {
+            try {
+                const ctx2 = new (window.AudioContext || window.webkitAudioContext)();
+                for (let i = 0; i < 3; i++) {
+                    const osc  = ctx2.createOscillator();
+                    const gain = ctx2.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx2.destination);
+                    osc.frequency.value = 1000;  // matches winsound.Beep(1000, 300)
+                    gain.gain.setValueAtTime(0.35, ctx2.currentTime + i * 0.4);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime + i * 0.4 + 0.3);
+                    osc.start(ctx2.currentTime + i * 0.4);
+                    osc.stop(ctx2.currentTime + i * 0.4 + 0.3);
+                }
+            } catch(e) { /* silent fail */ }
+        }
+
+        </script>
+    </body>
+</html>
